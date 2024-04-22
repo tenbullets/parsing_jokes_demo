@@ -1,4 +1,5 @@
 
+import java.awt.*;
 import java.io.IOException;
 
 import java.util.List;
@@ -10,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         List<String> data = jokeService.getJoke();
-        System.out.println("1");
-        clothesPrint.makePrint(data);
-        System.out.println("2");
+//        clothesPrint.makePrint(data, new Clothes("tshirt", "pinkishgrey"), Color.BLACK);
+//        clothesPrint.makePrint(data, new Clothes("hoodies", "black"), Color.WHITE);
+        clothesPrint.makePrint(data, new Clothes("sweatshirt", "black"), Color.WHITE);
     }
 }
