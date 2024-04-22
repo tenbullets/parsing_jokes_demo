@@ -21,16 +21,21 @@ public class ClothesPrint {
 
     public void makePrint(List<String> data, Clothes clothes, Color textColor) {
         Map<String, int[]> mdata = new HashMap<>();
-        // x, y, text size, wordsPerPar, spacing
-        mdata.put("sweatshirt", new int[] {570, 875, 34, 22, 41});
-        mdata.put("tshirt", new int[] {526, 823, 34, 22, 41});
-        mdata.put("hoodies", new int[] {248, 352, 17, 17, 18});
+//       x | y | text size | wordsPerPar| spacing
+        mdata.put("sweatshirt", new int[]
+                {570, 875, 34, 22, 41}
+        );
+        mdata.put("tshirt", new int[]
+                {526, 823, 34, 22, 41}
+        );
+        mdata.put("hoodies", new int[]
+                {248, 352, 17, 17, 18}
+        );
 
         int[] mDataArr = mdata.get(clothes.type);
         List<String> res = divideIntoParagraphs(data.get(0).toLowerCase(), mDataArr[3]);
 
         uploadResources(clothes, mDataArr);
-
 
         Graphics g = image.getGraphics();
         Graphics2D g2d = (Graphics2D) g;
@@ -52,7 +57,6 @@ public class ClothesPrint {
             g2d.drawString(re, mDataArr[0], mDataArr[1]);
             mDataArr[1] += mDataArr[4];
         }
-
         mDataArr[1] += (mDataArr[4]/2) + (mDataArr[4]/4);
         g2d.drawString(data.get(1), mDataArr[0], mDataArr[1]);
         g2d.dispose();
@@ -62,8 +66,8 @@ public class ClothesPrint {
         jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
         jpegParams.setCompressionQuality(1f);
 
-        ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
         try {
+            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
             writer.setOutput(new FileImageOutputStream(new File("src/main/java/imgs/result.jpg")));
             writer.write(null, new IIOImage(image, null, null), jpegParams);
         } catch (IOException e) {

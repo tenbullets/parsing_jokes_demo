@@ -9,15 +9,17 @@ import java.util.List;
 import java.util.Random;
 
 public class JokeService {
-    private static Document page;
-    private List<String> data = new ArrayList<>();
+    private final List<String> data = new ArrayList<>();
 
-    public List<String> getJoke() {
+    public List<String> getJoke(String type) {
         String randomDate = getRandomDate();
-        String res = getText(randomDate);
+        String res = getText(randomDate, type);
 
-        while(res.toCharArray().length > 70) {
-            res = getText(randomDate);
+        int lim = 70;
+        if(type.equals("anekdot")) lim = 85;
+
+        while(res.toCharArray().length > lim) {
+            res = getText(randomDate, type);
             randomDate = getRandomDate();
             System.out.println(res.toCharArray().length);
         }
@@ -38,19 +40,18 @@ public class JokeService {
         return formatter.format(randomDate);
     }
 
-    public static String getText(String date) {
+    public static String getText(String date, String type) {
+        Document page;
         try {
-            page = Jsoup.connect("https://www.anekdot.ru/release/aphorism/day/" + date + "/").get();
-//            jokes = Jsoup.connect("https://www.anekdot.ru/release/anekdot/week/1997-16/2").get();
+            page = Jsoup.connect("https://www.anekdot.ru/release/" + type + "/day/" + date + "/").get();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         var element = page.getElementsByClass("text");
         Random r = new Random();
-        String text = element.get(r.nextInt(element.size())).text();
 
-        return text;
+        return element.get(r.nextInt(element.size())).text();
     }
 
 }
