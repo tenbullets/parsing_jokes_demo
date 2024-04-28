@@ -16,7 +16,7 @@ public class JokeService {
         String res = getText(randomDate, type);
 
         int lim = 70;
-        if(type.equals("anekdot")) lim = 85;
+        if(type.equals("anekdot")) lim = 86;
 
         while(res.toCharArray().length > lim) {
             res = getText(randomDate, type);
@@ -49,9 +49,8 @@ public class JokeService {
         }
 
         var element = page.getElementsByClass("text");
-        Random r = new Random();
 
-        return element.get(r.nextInt(element.size())).text();
+        return element.get(new Random().nextInt(element.size())).text();
     }
 
 }

@@ -18,24 +18,17 @@ public class ClothesPrint {
     private static final String source = "src/main/java/imgs/clothes/";
     private static BufferedImage image;
     private static Font customFont;
+    private static Map<String, int[]> mdata;
+    private static Map<String, Color> colorMap;
 
-    public void makePrint(List<String> data, Clothes clothes, Color textColor) {
-        Map<String, int[]> mdata = new HashMap<>();
-//       x | y | text size | wordsPerPar| spacing
-        mdata.put("sweatshirt", new int[]
-                {570, 875, 34, 22, 41}
-        );
-        mdata.put("tshirt", new int[]
-                {526, 823, 34, 22, 41}
-        );
-        mdata.put("hoodies", new int[]
-                {248, 352, 17, 17, 18}
-        );
+    public void makePrint(List<String> data, Clothes clothes) {
+        uploadClothesConf(); //upload
 
+        Color textColor = colorMap.get(clothes.color);
         int[] mDataArr = mdata.get(clothes.type);
         List<String> res = divideIntoParagraphs(data.get(0).toLowerCase(), mDataArr[3]);
 
-        uploadResources(clothes, mDataArr);
+        uploadResources(clothes, mDataArr); //upload
 
         Graphics g = image.getGraphics();
         Graphics2D g2d = (Graphics2D) g;
@@ -57,6 +50,7 @@ public class ClothesPrint {
             g2d.drawString(re, mDataArr[0], mDataArr[1]);
             mDataArr[1] += mDataArr[4];
         }
+
         mDataArr[1] += (mDataArr[4]/2) + (mDataArr[4]/4);
         g2d.drawString(data.get(1), mDataArr[0], mDataArr[1]);
         g2d.dispose();
@@ -100,10 +94,37 @@ public class ClothesPrint {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/fonts/PTSerif-Regular.ttf")).deriveFont((float) mDataArr[2]);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
-
         } catch (IOException | FontFormatException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void uploadClothesConf() {
+        mdata = new HashMap<>();
+//       x | y | text size | wordsPerPar| spacing
+        mdata.put("sweatshirt", new int[]
+                {570, 875, 34, 22, 41}
+        );
+        mdata.put("tshirt", new int[]
+                {526, 823, 34, 22, 41}
+        );
+//        mdata.put("hoodies", new int[]
+//                {248, 352, 17, 17, 18}
+//        );
+        mdata.put("longsleeve", new int[]
+                {580, 875, 33, 20, 41}
+        );
+
+        colorMap = new HashMap<>();
+        colorMap.put("black", Color.WHITE);
+        colorMap.put("blue", Color.WHITE);
+        colorMap.put("milk", Color.BLACK);
+        colorMap.put("vinous", Color.WHITE);
+        colorMap.put("graphite", Color.WHITE);
+        colorMap.put("pinkishgrey", Color.WHITE);
+        colorMap.put("darkblue", Color.WHITE);
+        colorMap.put("gray", Color.BLACK);
+        colorMap.put("white", Color.BLACK);
     }
 
 }
