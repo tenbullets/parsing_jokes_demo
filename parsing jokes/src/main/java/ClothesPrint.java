@@ -8,10 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class ClothesPrint {
 
@@ -21,8 +19,8 @@ public class ClothesPrint {
     private static Map<String, int[]> mdata;
     private static Map<String, Color> colorMap;
 
-    public void makePrint(List<String> data, Clothes clothes) {
-        uploadClothesConf(); //upload
+    public void makePrint(List<String> data, Clothes clothes, String config) {
+        uploadClothesConf(clothes.type, config); //upload
 
         Color textColor = colorMap.get(clothes.color);
         int[] mDataArr = mdata.get(clothes.type);
@@ -54,7 +52,6 @@ public class ClothesPrint {
         mDataArr[1] += (mDataArr[4]/2) + (mDataArr[4]/4);
         g2d.drawString(data.get(1), mDataArr[0], mDataArr[1]);
         g2d.dispose();
-
 
         JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
         jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
@@ -99,21 +96,11 @@ public class ClothesPrint {
         }
     }
 
-    public static void uploadClothesConf() {
+    public static void uploadClothesConf(String type ,String conf) {
+        int[] config = Arrays.stream(conf.split("_")).mapToInt(Integer::parseInt).toArray();
+
         mdata = new HashMap<>();
-//       x | y | text size | wordsPerPar| spacing
-        mdata.put("sweatshirt", new int[]
-                {570, 875, 34, 22, 41}
-        );
-        mdata.put("tshirt", new int[]
-                {526, 823, 34, 22, 41}
-        );
-//        mdata.put("hoodies", new int[]
-//                {248, 352, 17, 17, 18}
-//        );
-        mdata.put("longsleeve", new int[]
-                {580, 875, 33, 20, 41}
-        );
+        mdata.put(type, config);
 
         colorMap = new HashMap<>();
         colorMap.put("black", Color.WHITE);
